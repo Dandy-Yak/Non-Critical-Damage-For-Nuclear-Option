@@ -1,7 +1,7 @@
 # NonCriticalDamage
 
 A BepInEx 5 mod for Nuclear Option that reduces incoming damage to player aircraft, so
-they can take several hits before being destroyed. Designed for use with my
+they can take several hits before being destroyed. ("I'll teach you how to do that when we get back") Designed for use with my
 [Ace Combat Reloads](https://github.com/Dandy-Yak/Ace-Combat-Style-Reloads-For-Nuclear-Option)
 mod to create an authentic Ace Combat experience.
 
