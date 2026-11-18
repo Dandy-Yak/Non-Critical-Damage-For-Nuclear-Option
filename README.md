@@ -25,15 +25,14 @@ it. The values are fixed in the code (the `Tuning` class in `Plugin.cs`):
 | Max overpressure per hit | 1000 | After dividing, one explosion can push one part with at most 1000 overpressure. |
 | Engine toughness | 4 | Engines and the parts they depend on take a quarter of that again. |
 
-The pilot is protected too. Fuel tank ignition is judged on roughly the damage a hit
-would have done in vanilla, and fires are never blocked. Nuclear blasts are not reduced.
+The pilot is protected too. Nuclear blasts are not reduced.
 Bullet and explosion hits shake the camera, in the cockpit and the orbit and chase views.
 
 ## Multiplayer
 
 Hit point damage and engine protection are decided on the host, so the host needs the
 mod. The explosion shove, fuel ignition and camera shake happen on the machine of whoever
-is flying the aircraft, so those only take effect for players who also have the mod.
+is flying the aircraft, so It is required for the host and client to have the mod installed
 
 ## Settings
 
