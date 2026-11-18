@@ -13,7 +13,7 @@ namespace NonCriticalDamage
     {
         public const string Guid = "nuclearoption.noncriticaldamage";
         public const string Name = "NonCriticalDamage";
-        public const string Version = "1.24.1";
+        public const string Version = "1.25.0";
 
         internal static ManualLogSource Log;
         internal static ConfigEntry<bool> AffectAIAircraft;
@@ -62,9 +62,12 @@ namespace NonCriticalDamage
             ApplyPatch(harmony, typeof(HurtOverlayPatch));
             ApplyPatch(harmony, typeof(DamageShakePatch));
             ApplyPatch(harmony, typeof(ThirdPersonShakePatch));
+            ApplyPatch(harmony, typeof(VersionTagPatch));
 
             foreach (var method in harmony.GetPatchedMethods())
                 Log.LogInfo($"Patched {method.DeclaringType?.Name}.{method.Name}");
+            // Players can only see and join each other when this line matches exactly on both machines.
+            Log.LogInfo($"Lobby version: {Application.version}");
             Log.LogInfo($"{Name} {Version} loaded.");
         }
 
@@ -676,6 +679,35 @@ namespace NonCriticalDamage
         private static float Noise(float x, float seed)
         {
             return Mathf.PerlinNoise(x, seed) * 2f - 1f;
+        }
+    }
+
+    /// <summary>
+    /// Appends a mod tag to Application.version, the same way Ace Combat Reloads does, so the
+    /// game's own lobby filter, lobby join check and dedicated-server filter only match players
+    /// running a compatible copy of this mod. Runs last, so with Ace Combat Reloads installed too
+    /// the tags always end up in the same order on every machine, whatever the load order.
+    /// </summary>
+    [HarmonyPatch(typeof(Application), nameof(Application.version), MethodType.Getter)]
+    internal static class VersionTagPatch
+    {
+        internal const string Tag = "_noncriticaldamage-v1.25";
+
+        private static string lastBase;
+        private static string lastTagged;
+
+        [HarmonyPriority(Priority.Last)]
+        private static void Postfix(ref string __result)
+        {
+            if (__result == null || __result.EndsWith(Tag, System.StringComparison.Ordinal))
+                return;
+
+            if (!string.Equals(__result, lastBase, System.StringComparison.Ordinal))
+            {
+                lastBase = __result;
+                lastTagged = __result + Tag;
+            }
+            __result = lastTagged;
         }
     }
 }

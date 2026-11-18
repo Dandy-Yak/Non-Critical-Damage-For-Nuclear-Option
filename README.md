@@ -34,6 +34,10 @@ Hit point damage and engine protection are decided on the host, so the host need
 mod. The explosion shove, fuel ignition and camera shake happen on the machine of whoever
 is flying the aircraft, so It is required for the host and client to have the mod installed
 
+The mod adds a tag to the game version, so players with and without it (or with a
+different version) don't see or join each other's games. It works alongside Ace Combat
+Reloads, which does the same.
+
 ## Settings
 
 After the first launch, edit `BepInEx/config/nuclearoption.noncriticaldamage.cfg`:
