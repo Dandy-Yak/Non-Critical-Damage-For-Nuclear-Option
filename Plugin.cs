@@ -13,11 +13,10 @@ namespace NonCriticalDamage
     {
         public const string Guid = "nuclearoption.noncriticaldamage";
         public const string Name = "NonCriticalDamage";
-        public const string Version = "1.25.0";
+        public const string Version = "1.26.0";
 
         internal static ManualLogSource Log;
         internal static ConfigEntry<bool> AffectAIAircraft;
-        internal static ConfigEntry<bool> NukesIgnoreProtection;
         internal static ConfigEntry<bool> ShowHurtOverlay;
         internal static ConfigEntry<float> CameraShake;
         internal static ConfigEntry<bool> DebugLogging;
@@ -29,10 +28,6 @@ namespace NonCriticalDamage
             AffectAIAircraft = Config.Bind(
                 "General", "AffectAIAircraft", false,
                 "Protect AI-flown aircraft as well as player-flown ones.");
-
-            NukesIgnoreProtection = Config.Bind(
-                "Nuclear", "NukesIgnoreProtection", true,
-                "Nuclear blasts do full vanilla damage to protected aircraft.");
 
             ShowHurtOverlay = Config.Bind(
                 "Effects", "ShowHurtOverlay", false,
@@ -425,6 +420,8 @@ namespace NonCriticalDamage
     /// Large explosions (anything too big for the game's fragment model, which includes all
     /// nuclear weapons) are applied by Shockwave.InfluencedObject.HasShockwaveReached. While
     /// that runs for a nuclear-sized yield we raise a flag so TakeDamagePatch stands aside.
+    /// This is fixed rather than a setting: the shove part runs on each player's own machine,
+    /// so a setting there would let a client protect itself without the host's agreement.
     /// </summary>
     [HarmonyPatch]
     internal static class NuclearBlastPatch
@@ -444,7 +441,7 @@ namespace NonCriticalDamage
         // blastYield is in kilograms of TNT.
         private static void Prefix(float __3)
         {
-            Protection.NuclearBlastInProgress = __3 >= Tuning.NukeYieldKg && Plugin.NukesIgnoreProtection.Value;
+            Protection.NuclearBlastInProgress = __3 >= Tuning.NukeYieldKg;
         }
 
         private static void Finalizer()
@@ -691,7 +688,7 @@ namespace NonCriticalDamage
     [HarmonyPatch(typeof(Application), nameof(Application.version), MethodType.Getter)]
     internal static class VersionTagPatch
     {
-        internal const string Tag = "_noncriticaldamage-v1.25";
+        internal const string Tag = "_noncriticaldamage-v1.26";
 
         private static string lastBase;
         private static string lastTagged;

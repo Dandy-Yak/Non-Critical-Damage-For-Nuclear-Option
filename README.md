@@ -45,7 +45,6 @@ After the first launch, edit `BepInEx/config/nuclearoption.noncriticaldamage.cfg
 | Setting | Default | Meaning |
 |---|---|---|
 | `AffectAIAircraft` | false | Protect AI-flown aircraft too. |
-| `NukesIgnoreProtection` | true | Nuclear blasts do full vanilla damage. |
 | `ShowHurtOverlay` | false | Show the red screen flash when the pilot is hurt. |
 | `CameraShake` | 5 | Strength of the camera shake on bullet and explosion hits. 0 = off, 5 = full strength. |
 | `DebugLogging` | false | Log every reduction to `BepInEx/LogOutput.log`. Pierce and fire are shown after armour. |
